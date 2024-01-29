@@ -17,6 +17,7 @@ export const supabaseMiddleware: MiddlewareHandler = async (c, next) => {
             throw new Error(`SUPABASE_KEY debe ser declarado como variable de env`)
         }
 
+        if (getSupabase(c)) return next()
         const supabase = createClient(c.env.SUPABASE_URL, c.env.SUPABASE_KEY)
         c.set(idTokenContext, supabase)
         await next()
