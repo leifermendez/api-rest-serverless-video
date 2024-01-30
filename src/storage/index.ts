@@ -1,10 +1,6 @@
 import { Hono } from 'hono'
 import { getSupabase, supabaseMiddleware } from '../middleware/supabase'
-
-export type Bindings = {
-    SUPABASE_KEY: string
-    SUPABASE_URL: string
-}
+import { Bindings } from '../bindings'
 
 export const storage = new Hono<{ Bindings: Bindings }>().basePath('/storage')
 

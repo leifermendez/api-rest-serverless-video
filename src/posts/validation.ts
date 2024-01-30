@@ -1,9 +1,12 @@
 import { z } from 'zod'
 import { zValidator } from '@hono/zod-validator'
 
-
-export const schemaUser = z.object({
+export const schemaPost = z.object({
     name: z.string(),
-    email: z.string().email()
+    description: z.string(),
+    price: z.string()
 })
-export const zUserValidator = zValidator('form', schemaUser)
+
+export type Post = z.infer<typeof schemaPost>
+
+export const zPostValidator = zValidator('form', schemaPost)
