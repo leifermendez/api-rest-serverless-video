@@ -1,9 +1,5 @@
 import { type SupabaseClient } from "@supabase/supabase-js"
-
-export type User = {
-    name: string
-    email: string
-}
+import { Post } from "./validation"
 
 /**
  * Obtener los datos
@@ -11,14 +7,14 @@ export type User = {
  * @param supabase 
  * @returns 
  */
-export const getUsers = async (supabase: SupabaseClient): Promise<User[]> => {
-    const { data } = await supabase.from('users').select('*')
-    return data as User[]
+export const getPosts = async (supabase: SupabaseClient): Promise<Post[]> => {
+    const { data } = await supabase.from('posts').select('*')
+    return data as Post[]
 }
 
-export const addUser = async (supabase: SupabaseClient, user: User): Promise<User> => {
-    const { data } = await supabase.from('users')
+export const addPost = async (supabase: SupabaseClient, user: Post): Promise<Post> => {
+    const { data } = await supabase.from('posts')
         .insert(user)
         .select('*')
-    return data as unknown as User
+    return data as unknown as Post
 }

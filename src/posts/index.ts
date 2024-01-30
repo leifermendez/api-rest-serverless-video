@@ -1,29 +1,26 @@
 import { Hono } from 'hono'
 import { supabaseMiddleware, getSupabase } from '../middleware/supabase'
-import { User, addUser, getUsers } from './service'
-import { zUserValidator } from './validation'
-
-export type Bindings = {
-    SUPABASE_KEY: string
-    SUPABASE_URL: string
-}
+import { Post, zPostValidator } from './validation'
+import { Bindings } from '../bindings'
+import { addPost, getPosts } from './service'
+import { authMiddleware } from '../middleware/auth'
 
 export const posts = new Hono<{ Bindings: Bindings }>().basePath('/posts')
 
-posts.use('*', supabaseMiddleware)
+posts.use('*', supabaseMiddleware, authMiddleware)
 
 posts.get('/', async (c) => {
     const supabase = getSupabase(c)
-    const data = await getUsers(supabase)
+    const data = await getPosts(supabase)
     return c.json({
         data,
     })
 })
 
-posts.post('/', zUserValidator, async (c) => {
-    const body = await c.req.parseBody<User>()
+posts.post('/', zPostValidator, async (c) => {
+    const body = await c.req.parseBody<Post>()
     const supabase = getSupabase(c)
-    const data = await addUser(supabase, body)
+    const data = await addPost(supabase, body)
     return c.json({
         data
     })
